@@ -7,18 +7,16 @@
 
 #include <fstream>
 
-#include "Person.h"
+#include "PersonExport.h"
+#include "IExport.h"
 
 using namespace std;
 
-class PersonToDat {
-private:
-    string _path;
-    Person* _person;
+class PersonToDat : public PersonExportAbstract {
 public:
-    PersonToDat(const string &path, Person *person) : _path(path), _person(person) {}
+    PersonToDat(const string &path, Person *person) : PersonExportAbstract(path, person) {}
 
-    void Export() {
+    void Export() override {
         ofstream file;
         file.open(_path);
 

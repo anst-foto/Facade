@@ -1,0 +1,60 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+class Person {
++ id : int
++ name : string
+
++ Person(id : int, name : string)
+}
+
+interface IExport {
++ {abstract} Export() : void
+}
+
+IExport <|.. PersonExportAbstract
+Person <--* PersonExportAbstract
+abstract class PersonExportAbstract {
+# person : Person
+# path : string
+
+# PersonExportAbstract(person : Person, path : string)
+}
+
+PersonExportAbstract <|-- PersonToDat
+class PersonToDat {
++ PersonToDat(person : Person, path : string)
+
++ Export() : void
+}
+
+PersonExportAbstract <|-- PersonToCSV
+class PersonToCSV {
++ PersonToCSV(person : Person, path : string)
+
++ Export() : void
+}
+
+PersonToDat <--* Facade
+PersonToCSV <--* Facade
+class Facade {
+- toDat : PersonToDat
+- toCSV : PersonToCSV
+
++ Facade(person : Person, path : string)
+
++ PersonToCsv() : void
++ PersonToData() : void
+}
+
+IExport <|.. ProxyExport
+PersonExportAbstract <--* ProxyExport
+class ProxyExport {
+- export : PersonExportAbstract
+
++ ProxyExport(export : PersonExportAbstract)
+
++ Export() : void
+}
+
+@enduml
